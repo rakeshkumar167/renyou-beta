@@ -1,0 +1,72 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+...
+</head>
+<body>
+    <div th:replace="fragments/header :: header">
+      ...
+    </div>
+    <div class="container">
+      <div layout:fragment="content">
+        <!-- ============================================================================ -->
+        <!-- This content is only used for static prototyping purposes (natural templates)-->
+        <!-- and is therefore entirely optional, as this markup fragment will be included -->
+        <!-- from "fragments/header.html" at runtime.                                     -->
+        <!-- ============================================================================ -->
+        <h1>Add/Update a Product</h1>
+        	<span class="alert alert-success" th:text="${message}" th:if="${message != null}"></span>
+        	<br/>
+        	<br/>
+			<form action="/saveProduct" method="post">
+			  <div class="form-group row">
+			    <label for="name" class="col-sm-2 col-form-label">Name</label>
+			    <div class="col-sm-10">
+			      <input type="hidden" class="form-control" name="id" th:value="${product?.id}"></input>
+			    
+			      <input type="text" class="form-control" id="name" placeholder="Name" name="name" th:value="${product?.name}"></input>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="description" class="col-sm-2 col-form-label">Description</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="description" placeholder="Description" name="description" th:value="${product?.description}"></input>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="description" class="col-sm-2 col-form-label">Parent Category</label>
+			    <div class="col-sm-10">
+			    	<select id="productCategory" name="productCategoryId">
+			    		<option value="-1">Select</option>
+			    		<option th:each="pc : ${productCategoryList}" 
+			    			th:value="${pc.id}" 
+			    			th:text="${pc.name}"
+			    			th:selected="${pc.id == product?.productCategoryId}"></option>
+			    	</select>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="description" class="col-sm-2 col-form-label">Brand</label>
+			    <div class="col-sm-10">
+			    	<select id="brandId" name="brandId">
+			    		<option value="-1">Select</option>
+			    		<option th:each="brand : ${brandList}" 
+			    			th:value="${brand.id}" 
+			    			th:text="${brand.name}"
+			    			th:selected="${brand.id == product?.brandId}"></option>
+			    	</select>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <div class="col-sm-10">
+			      <button type="submit" class="btn btn-primary">Save</button>
+			    </div>
+			  </div>
+			</form>
+      </div>
+      <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
+    </div>
+	<!-- /.container -->
+
+
+</body>
+</html>
