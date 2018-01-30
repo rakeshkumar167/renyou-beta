@@ -52,6 +52,7 @@ public class MainController {
 		model.addAttribute("brands", brandRepository.count());
 		model.addAttribute("productCategories", productCateogryRepository.count());
 		model.addAttribute("spaces", spaceRepository.count());
+		model.addAttribute("products", productRepository.count());
 		return "index";
 	}
 
