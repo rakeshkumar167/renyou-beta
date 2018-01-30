@@ -1,11 +1,16 @@
 package com.renyou.db;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+import com.renyou.dto.SpaceDTO;
 
 @Entity
 public class Space {
@@ -17,10 +22,20 @@ public class Space {
     @Column(unique = true)
     private String name;
     
-    private String description;
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="space_type_id")
+    private SpaceType spaceType;
+
+	private String description;
     
     public Space() {
     	
+    }
+    
+    public Space(SpaceDTO dto) {
+    	this.id = dto.getId();
+    	this.name = dto.getName();
+    	this.description = dto.getDescription();
     }
 
 
@@ -46,5 +61,14 @@ public class Space {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+    
+    public SpaceType getSpaceType() {
+		return spaceType;
+	}
+
+
+	public void setSpaceType(SpaceType spaceType) {
+		this.spaceType = spaceType;
 	}
 }

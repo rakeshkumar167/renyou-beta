@@ -13,38 +13,19 @@
         <!-- and is therefore entirely optional, as this markup fragment will be included -->
         <!-- from "fragments/header.html" at runtime.                                     -->
         <!-- ============================================================================ -->
-        <h1>Add/Update a Space</h1>
+        <h1>Add/Update a Space Type</h1>
         	<span class="alert alert-success" th:text="${message}" th:if="${message != null}"></span>
         	<br/>
         	<br/>
-			<form action="/saveSpace" method="post">
+			<form action="/saveSpaceType" method="post">
 			  <div class="form-group row">
 			    <label for="name" class="col-sm-2 col-form-label">Name</label>
 			    <div class="col-sm-10">
-			      <input type="hidden" class="form-control" name="id" th:value="${space?.id}"></input>
+			      <input type="hidden" class="form-control" name="id" th:value="${spaceType?.id}"></input>
 			    
-			      <input type="text" class="form-control" id="name" placeholder="Name" name="name" th:value="${space?.name}"></input>
+			      <input type="text" class="form-control" id="name" placeholder="Name" name="name" th:value="${spaceType?.name}"></input>
 			    </div>
 			  </div>
-			  <div class="form-group row">
-			    <label for="description" class="col-sm-2 col-form-label">Description</label>
-			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="description" placeholder="Description" name="description" th:value="${space?.description}"></input>
-			    </div>
-			  </div>
-			  <div class="form-group row">
-			    <label for="description" class="col-sm-2 col-form-label">Space Type</label>
-			    <div class="col-sm-10">
-			    	<select id="spaceType" name="spaceTypeId">
-			    		<option value="-1">Select</option>
-			    		<option th:each="st : ${spaceTypeList}" 
-			    			th:value="${st.id}" 
-			    			th:text="${st.name}"
-			    			th:selected="${st.id == space?.spaceTypeId}"></option>
-			    	</select>
-			    </div>
-			  </div>
-
 			  <div class="form-group row">
 			    <div class="col-sm-10">
 			      <button type="submit" class="btn btn-primary">Save</button>

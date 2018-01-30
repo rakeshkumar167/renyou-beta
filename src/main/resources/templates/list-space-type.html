@@ -13,9 +13,9 @@
         <!-- and is therefore entirely optional, as this markup fragment will be included -->
         <!-- from "fragments/header.html" at runtime.                                     -->
         <!-- ============================================================================ -->
-        <h1>SpaceList</h1>
+        <h1>SpaceTypeList</h1>
 		<div>
-			<a href="/editSpace" class="btn btn-success btn-sm float-right">Add New</a>
+			<a href="/editSpaceType" class="btn btn-success btn-sm float-right">Add New</a>
 			<br/>
 			<br/>
 		    <table class="table table-condensed table-sm table-striped">
@@ -23,18 +23,14 @@
 		        <tr>
 		            <th >Id</th>
 		            <th>Name</th>
-		            <th>Description</th>
-		            <th>Space Type</th>
 		            <th></th>
 		            <th></th>
 		        </tr>
 		        </thead>
 		        <tbody>
-		        <tr th:each="space : ${spaces}">
+		        <tr th:each="space : ${spaceTypes}">
 		            <td th:text="${space.id}"></td>
 		            <td th:text="${space.name}"></td>
-		            <td th:text="${space.description}"></td>
-		            <td th:text="${space.spaceType?.name}"></td>
 		            <td><a th:href="@{'/editSpace?id=' + ${space.id}}">Edit</a></td>
 		            <td></td>
 		        </tr>

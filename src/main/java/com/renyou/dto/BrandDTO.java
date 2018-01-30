@@ -19,6 +19,10 @@ public class BrandDTO {
 	
     private Integer id;
 
+	private String name;
+    
+    private String description;
+
     public Integer getId() {
 		return id;
 	}
@@ -43,7 +47,4 @@ public class BrandDTO {
 		this.description = description;
 	}
 
-	private String name;
-    
-    private String description;
 }
