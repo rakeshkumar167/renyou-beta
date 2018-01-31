@@ -3,6 +3,9 @@ package com.renyou.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.renyou.db.Image;
+import com.renyou.db.Product;
+
 public class ProductDTO {
 	private Integer id;
     private String name;
@@ -15,12 +18,16 @@ public class ProductDTO {
 		
 	}
 	
-	public ProductDTO(Integer id, String name, String description, Integer productCategoryId, Integer brandId){
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.productCategoryId = productCategoryId;
-		this.brandId = brandId;
+	public ProductDTO(Product product){
+		this.id = product.getId();
+		this.name = product.getName();
+		this.description = product.getDescription();
+		this.productCategoryId = product.getCategory()!=null?product.getCategory().getId():null;
+		this.brandId = product.getBrand()!=null?product.getBrand().getId():null;
+		for(Image img:product.getImages()){
+			this.images.add(img.getPath());
+		}
+		
 	}
 	
 	public Integer getId() {
@@ -58,6 +65,14 @@ public class ProductDTO {
 	
 	public void addImage(String img){
 		this.images.add(img);
+	}
+
+	public List<String> getImages() {
+		return images;
+	}
+
+	public void setImages(List<String> images) {
+		this.images = images;
 	}
 
 }

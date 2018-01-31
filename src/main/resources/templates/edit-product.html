@@ -62,6 +62,24 @@
 			    </div>
 			  </div>
 			</form>
+			<div class="row img-row" th:if="${product?.images !=null}">
+				<div th:each="img : ${product.images}" style="margin:5px;"><img th:src="@{${img}}"  width="100px" height="100px"/></div>
+			</div>
+			<span class="alert alert-success" th:text="${messageImgUpload}" th:if="${messageImgUpload != null}"></span><br/>
+			<form action="/addProductImage" method="POST" enctype="multipart/form-data" th:if="${product?.id != null}">
+			<input type="hidden" class="form-control" name="id" th:value="${product?.id}"></input>
+			<div class="form-group row">
+			    <label for="description" class="col-sm-2 col-form-label">Add Image</label>
+			    <div class="col-sm-10">
+			    	<input type="file" name="file" />
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <div class="col-sm-10">
+			      <button type="submit" class="btn btn-success">Upload</button>
+			    </div>
+			  </div>			
+			</form>
       </div>
       <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
     </div>

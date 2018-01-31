@@ -14,11 +14,10 @@
 			<div>
 				<a href="/editProduct" class="btn btn-success btn-sm float-right">Add
 					New</a> <br /> <br />
-				<table class="table table-condensed table-sm table-striped">
+				<table class="table table-condensed table-sm table-striped table-font-x">
 					<thead class="thead-dark">
 						<tr>
 							<th>Id</th>
-							<th></th>
 							<th>Name</th>
 							<th>Description</th>
 							<th>Product Category</th>
@@ -30,9 +29,7 @@
 					<tbody>
 						<tr th:each="product : ${products}">
 							<td th:text="${product.id}"></td>
-							<td>
-								<div th:each="img : ${product.images}"><img th:src="@{${img.path}}"/></div>
-							</td>
+
 							<td th:text="${product.name}"></td>
 							<td th:text="${product.description}"></td>
 							<td th:text="${product.category?.name}"></td>
