@@ -15,9 +15,14 @@ import com.renyou.db.Brand;
 import com.renyou.db.BrandRepository;
 import com.renyou.db.Image;
 import com.renyou.db.Product;
+import com.renyou.db.ProductAttribute;
+import com.renyou.db.ProductAttributeRepository;
+import com.renyou.db.ProductAttributeType;
+import com.renyou.db.ProductAttributeTypeRepository;
 import com.renyou.db.ProductCategory;
 import com.renyou.db.ProductCategoryRepository;
 import com.renyou.db.ProductRepository;
+import com.renyou.dto.ProductAttributeDTO;
 import com.renyou.dto.ProductCategoryDTO;
 import com.renyou.dto.ProductDTO;
 import com.renyou.storage.StorageService;
@@ -32,6 +37,12 @@ public class ProductController {
 	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private ProductAttributeTypeRepository productAttributeTypeRepository;
+	
+	@Autowired
+	private ProductAttributeRepository productAttributeRepository;
 	
 	@Autowired
 	private StorageService storageService;
@@ -139,5 +150,58 @@ public class ProductController {
 		model.addAttribute("productCategoryList", productCateogryRepository.findAll());
 		model.addAttribute("brandList", brandRepository.findAll());
     }
+    
+	@RequestMapping("/listProductAttributeTypes")
+	public String productAttributeTypesList(Model model) {
+		model.addAttribute("productAttributeTypes", productAttributeTypeRepository.findAll());
+		return "list-product-attribute-type";
+	}
+
+	@RequestMapping(value = "/editProductAttributeType", method = RequestMethod.GET)
+	public String productAttributeTypesAdd(@RequestParam(value = "id", required = false) Integer id, Model model) {
+		if (id != null) {
+			ProductAttributeType productAttributeType = productAttributeTypeRepository.findOne(id);
+			model.addAttribute("productAttributeType", productAttributeType);
+		}
+		return "edit-product-attribute-type";
+	}
+
+	@RequestMapping(value = "/saveProductAttributeType", method = RequestMethod.POST)
+	public String productAttributeTypeSave(ProductAttributeType productAttributeType, Model model) {
+		productAttributeTypeRepository.save(productAttributeType);
+		model.addAttribute("productAttributeType", productAttributeType);
+		model.addAttribute("message", "productAttributeType " + productAttributeType.getName() + " saved successfully");
+		return "edit-product-attribute-type";
+	}
+	
+	
+	@RequestMapping("/listProductAttributes")
+	public String productAttributeList(Model model) {
+		model.addAttribute("productAttributes", productAttributeRepository.findAll());
+		return "list-product-attribute";
+	}
+
+	@RequestMapping(value = "/editProductAttribute", method = RequestMethod.GET)
+	public String productAttributeEdit(@RequestParam(value = "id", required = false) Integer id, Model model) {
+		if (id != null) {
+			ProductAttribute productAttribute = productAttributeRepository.findOne(id);
+			model.addAttribute("productAttribute", new ProductAttributeDTO(productAttribute));
+		}
+		model.addAttribute("productAttributeTypeList", productAttributeTypeRepository.findAll());
+		return "edit-product-attribute";
+	}
+
+	@RequestMapping(value = "/saveProductAttribute", method = RequestMethod.POST)
+	public String productAttributeSave(ProductAttributeDTO dto, Model model) {
+		ProductAttribute productAttribute = new ProductAttribute(dto);
+		if(dto.getProductAttributeTypeId()!=null){
+			productAttribute.setProductAttributeType(productAttributeTypeRepository.findOne(dto.getProductAttributeTypeId()));
+		} 
+		productAttributeRepository.save(productAttribute);
+		model.addAttribute("productAttribute", new ProductAttributeDTO(productAttribute));
+		model.addAttribute("message", "Product Attribute " + productAttribute.getName() + " saved successfully");
+		model.addAttribute("productAttributeTypeList", productAttributeTypeRepository.findAll());
+		return "edit-product-attribute";
+	}
 
 }

@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+...
+</head>
+<body>
+    <div th:replace="fragments/header :: header">
+      ...
+    </div>
+    <div class="container">
+      <div layout:fragment="content">
+        <!-- ============================================================================ -->
+        <!-- This content is only used for static prototyping purposes (natural templates)-->
+        <!-- and is therefore entirely optional, as this markup fragment will be included -->
+        <!-- from "fragments/header.html" at runtime.                                     -->
+        <!-- ============================================================================ -->
+        <h1>Product Attribute List</h1>
+		<div>
+			<a href="/editProductAttribute" class="btn btn-success btn-sm float-right">Add New</a>
+			<br/>
+			<br/>
+		    <table class="table table-condensed table-sm table-striped table-font-x">
+		    	<thead class="thead-dark">
+		        <tr>
+		            <th >Id</th>
+		            <th>Name</th>
+		            <th>Product Attribute Type</th>
+		            <th></th>
+		            <th></th>
+		        </tr>
+		        </thead>
+		        <tbody>
+		        <tr th:each="productAttribute : ${productAttributes}">
+		            <td th:text="${productAttribute.id}"></td>
+		            <td th:text="${productAttribute.name}"></td>
+		            <td th:text="${productAttribute.productAttributeType?.name}"></td>
+		            <td><a th:href="@{'/editProductAttribute?id=' + ${productAttribute.id}}">Edit</a></td>
+		            <td></td>
+		        </tr>
+		        </tbody>
+		    </table>
+		</div>
+      </div>
+      <div th:replace="fragments/footer :: footer"></div>
+    </div>
+	<!-- /.container -->
+
+
+</body>
+</html>

@@ -16,34 +16,34 @@
         <h1>Admin Dashboard</h1>
 	    <div class="row">
 	        <div class="col s3 m3">
-	          <div class="card blue-grey darken-1">
-	            <div class="card-content white-text">
-	              <span class="card-title">Projects</span>
+	          <div class="card card-inverse card-success mb-3 text-center">
+	          <div class="card-header">Projects</div>
+	            <div class="card-block white-text">
 	              <p><span th:text="${projects}">0</span> available</p>
 	            </div>
-	            <div class="card-action">
+	            <div class="card-footer">
 	              <a href="/listProjects">View All Projects</a>
 	            </div>
 	          </div>
 	        </div>
 	        <div class="col s3 m3">
-	          <div class="card blue-grey darken-1">
-	            <div class="card-content white-text">
-	              <span class="card-title">Designers</span>
+	          <div class="card card-inverse mb-3 text-center">
+	          <div class="card-header">Designers</div>
+	            <div class="card-block white-text">
 	              <p><span th:text="${designers}"></span> available</p>
 	            </div>
-	            <div class="card-action">
+	            <div class="card-footer">
 	              <a href="/listDesigners">View All Designers</a>
 	            </div>
 	          </div>
 	        </div>
 	        <div class="col s3 m3">
-	          <div class="card blue-grey darken-1">
-	            <div class="card-content white-text">
-	              <span class="card-title">Spaces</span>
+	          <div class="card card-inverse card-primary mb-3 text-center">
+	          <div class="card-header">Spaces</div>
+	            <div class="card-block white-text">
 	              <p><span th:text="${spaces}"></span> available</p>
 	            </div>
-	            <div class="card-action">
+	            <div class="card-footer">
 	              <a href="/listSpaces">View All Spaces</a>
 	            </div>
 	          </div>
@@ -51,34 +51,35 @@
 	      </div>
           <div class="row">
 	        <div class="col s3 m3">
-	          <div class="card blue-grey darken-1">
-	            <div class="card-content white-text">
-	              <span class="card-title">Product Categories</span>
+	          <div class="card card-inverse card-warning mb-3 text-center">
+	          <div class="card-header">Product Categories</div>
+	            <div class="card-block white-text">
+	            
 	              <span th:text="${productCategories}"></span> available
 	            </div>
-	            <div class="card-action">
+	            <div class="card-footer">
 	              <a href="/listProductCategory">View All Product Categories</a>
 	            </div>
 	          </div>
 	        </div>
 	        <div class="col s3 m3">
-	          <div class="card blue-grey darken-1">
-	            <div class="card-content white-text">
-	              <span class="card-title">Brands</span>
+	          <div class="card card-inverse card-info mb-3 text-center">
+	          <div class="card-header">Brands</div>
+	            <div class="card-block white-text">
 	              <p><span th:text="${brands}"></span> available</p>
 	            </div>
-	            <div class="card-action">
+	            <div class="card-footer">
 	              <a href="/listBrands">View All Brands</a>
 	            </div>
 	          </div>
 	        </div>
 	        <div class="col s3 m3">
-	          <div class="card blue-grey darken-1">
-	            <div class="card-content white-text">
-	              <span class="card-title">Products</span>
+	          <div class="card card-inverse card-danger mb-3 text-center">
+	          <div class="card-header">Products</div>
+	            <div class="card-block white-text">
 	              <p><span th:text="${products}"></span> available</p>
 	            </div>
-	            <div class="card-action">
+	            <div class="card-footer">
 	              <a href="/listProducts">View All Products</a>
 	            </div>
 	          </div>
@@ -91,6 +92,4 @@
 
 
 </body>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"></link>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </html>
