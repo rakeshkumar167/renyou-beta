@@ -1,0 +1,58 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+...
+</head>
+<body>
+    <div th:replace="fragments/header :: header">
+      ...
+    </div>
+    <div class="container">
+      <div layout:fragment="content">
+
+        <h1>Add/Update a Designer Type</h1>
+        	<span class="alert alert-success" th:text="${message}" th:if="${message != null}"></span>
+        	<br/>
+        	<br/>
+			<form action="/saveDesigner" method="post">
+			  <div class="form-group row">
+			    <label for="name" class="col-sm-2 col-form-label">Name</label>
+			    <div class="col-sm-10">
+			      <input type="hidden" class="form-control" name="id" th:value="${designer?.id}"></input>
+			    
+			      <input type="text" class="form-control" id="name" placeholder="Name" name="name" th:value="${designer?.name}"></input>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="name" class="col-sm-2 col-form-label">Description</label>
+			    <div class="col-sm-10">
+			    
+			      <input type="text" class="form-control" id="city" placeholder="Description" name="description" th:value="${designer?.description}"></input>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="name" class="col-sm-2 col-form-label">City</label>
+			    <div class="col-sm-10">
+			    
+			      <input type="text" class="form-control" id="city" placeholder="City" name="city" th:value="${designer?.city}"></input>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="name" class="col-sm-2 col-form-label">Address</label>
+			    <div class="col-sm-10">
+			      <textarea  class="form-control" name="address" th:value="${designer?.address}"></textarea>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <div class="col-sm-10">
+			      <button type="submit" class="btn btn-primary">Save</button>
+			    </div>
+			  </div>
+			</form>
+      </div>
+      <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
+    </div>
+	<!-- /.container -->
+
+
+</body>
+</html>
