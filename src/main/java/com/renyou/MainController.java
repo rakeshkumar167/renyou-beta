@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.renyou.db.BrandRepository;
+import com.renyou.db.DesignerRepository;
 import com.renyou.db.ProductCategoryRepository;
 import com.renyou.db.ProductRepository;
 import com.renyou.db.SpaceRepository;
@@ -24,6 +25,9 @@ public class MainController {
 	
 	@Autowired
 	private SpaceRepository spaceRepository;
+	
+	@Autowired
+	private DesignerRepository designerRepository;
 
 	@RequestMapping("/")
 	public String welcome(Model model) {
@@ -31,6 +35,8 @@ public class MainController {
 		model.addAttribute("productCategories", productCateogryRepository.count());
 		model.addAttribute("spaces", spaceRepository.count());
 		model.addAttribute("products", productRepository.count());
+		model.addAttribute("designers", designerRepository.count());
+
 		return "index";
 	}
 
