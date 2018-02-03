@@ -9,6 +9,7 @@ import com.renyou.db.BrandRepository;
 import com.renyou.db.DesignerRepository;
 import com.renyou.db.ProductCategoryRepository;
 import com.renyou.db.ProductRepository;
+import com.renyou.db.ProjectRepository;
 import com.renyou.db.SpaceRepository;
 
 @Controller
@@ -29,6 +30,9 @@ public class MainController {
 	@Autowired
 	private DesignerRepository designerRepository;
 
+	@Autowired
+	private ProjectRepository projectRepository;
+
 	@RequestMapping("/")
 	public String welcome(Model model) {
 		model.addAttribute("brands", brandRepository.count());
@@ -36,6 +40,7 @@ public class MainController {
 		model.addAttribute("spaces", spaceRepository.count());
 		model.addAttribute("products", productRepository.count());
 		model.addAttribute("designers", designerRepository.count());
+		model.addAttribute("projects", projectRepository.count());
 
 		return "index";
 	}
@@ -63,4 +68,13 @@ public class MainController {
 	public void setProductRepository(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
+
+	public ProjectRepository getProjectRepository() {
+		return projectRepository;
+	}
+
+	public void setProjectRepository(ProjectRepository projectRepository) {
+		this.projectRepository = projectRepository;
+	}
+
 }
