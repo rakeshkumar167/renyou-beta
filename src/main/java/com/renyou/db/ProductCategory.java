@@ -1,7 +1,9 @@
 package com.renyou.db;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,6 +36,9 @@ public class ProductCategory {
     
     @OneToMany(mappedBy="parentProductCategory")
     private List<ProductCategory> subCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
+    private Set<ProductCategoryToProductAttributeRel> productCategoryToProductAttributeRel = new HashSet<ProductCategoryToProductAttributeRel>();
     
     public ProductCategory() {
     	
@@ -83,5 +88,14 @@ public class ProductCategory {
 
 	public void setSubCategories(List<ProductCategory> subCategories) {
 		this.subCategories = subCategories;
+	}
+
+	public Set<ProductCategoryToProductAttributeRel> getProductCategoryToProductAttributeRel() {
+		return productCategoryToProductAttributeRel;
+	}
+
+	public void setProductCategoryToProductAttributeRel(
+			Set<ProductCategoryToProductAttributeRel> productCategoryToProductAttributeRel) {
+		this.productCategoryToProductAttributeRel = productCategoryToProductAttributeRel;
 	}
 }

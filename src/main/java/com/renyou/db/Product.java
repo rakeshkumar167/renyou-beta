@@ -43,6 +43,9 @@ public class Product {
             mappedBy = "product")
     private Set<Image> images = new HashSet<>();
     
+    @OneToMany(mappedBy = "product")
+    private Set<ProductToProductAttributeRel> productToProductAttributeRel = new HashSet<ProductToProductAttributeRel>();
+    
     public Product(){
     	
     }
@@ -101,6 +104,14 @@ public class Product {
 
 	public void setImages(Set<Image> images) {
 		this.images = images;
+	}
+
+	public Set<ProductToProductAttributeRel> getProductToProductAttributeRel() {
+		return productToProductAttributeRel;
+	}
+
+	public void setProductToProductAttributeRel(Set<ProductToProductAttributeRel> productToProductAttributeRel) {
+		this.productToProductAttributeRel = productToProductAttributeRel;
 	}
 
 

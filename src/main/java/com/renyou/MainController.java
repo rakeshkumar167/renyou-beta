@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.renyou.db.BrandRepository;
 import com.renyou.db.DesignerRepository;
@@ -11,6 +12,7 @@ import com.renyou.db.ProductCategoryRepository;
 import com.renyou.db.ProductRepository;
 import com.renyou.db.ProjectRepository;
 import com.renyou.db.SpaceRepository;
+import com.renyou.dto.TestDTO;
 
 @Controller
 public class MainController {
@@ -45,36 +47,16 @@ public class MainController {
 		return "index";
 	}
 
-	public BrandRepository getBrandRepository() {
-		return brandRepository;
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public String test(Model model) {
+		return "test";
+	}
+	
+	@RequestMapping(value = "/test", method = RequestMethod.POST)
+	public String test2(TestDTO dto, Model model) {
+		System.out.println("##### "+dto.getData());
+		return "test";
 	}
 
-	public void setBrandRepository(BrandRepository brandRepository) {
-		this.brandRepository = brandRepository;
-	}
-
-	public ProductCategoryRepository getProductCateogryRepository() {
-		return productCateogryRepository;
-	}
-
-	public void setProductCateogryRepository(ProductCategoryRepository productCateogryRepository) {
-		this.productCateogryRepository = productCateogryRepository;
-	}
-
-	public ProductRepository getProductRepository() {
-		return productRepository;
-	}
-
-	public void setProductRepository(ProductRepository productRepository) {
-		this.productRepository = productRepository;
-	}
-
-	public ProjectRepository getProjectRepository() {
-		return projectRepository;
-	}
-
-	public void setProjectRepository(ProjectRepository projectRepository) {
-		this.projectRepository = projectRepository;
-	}
 
 }

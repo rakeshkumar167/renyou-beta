@@ -1,6 +1,8 @@
 package com.renyou;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import com.renyou.db.ProductAttributeType;
 import com.renyou.db.ProductAttributeTypeRepository;
 import com.renyou.db.ProductCategory;
 import com.renyou.db.ProductCategoryRepository;
+import com.renyou.db.ProductCategoryToProductAttributeRel;
 import com.renyou.db.ProductRepository;
 import com.renyou.dto.ProductAttributeDTO;
 import com.renyou.dto.ProductCategoryDTO;
@@ -60,10 +63,12 @@ public class ProductController {
 	public String editProductCategory(@RequestParam(value = "id", required = false) Integer id, Model model) {
 		if (id != null) {
 			ProductCategory pc = productCateogryRepository.findOne(id);
-			model.addAttribute("productCategory", new ProductCategoryDTO(pc.getId(), pc.getName(), pc.getDescription(),
-					pc.getParentProductCategory() != null ? pc.getParentProductCategory().getId() : null));
+			model.addAttribute("productCategory", new ProductCategoryDTO(pc));
+		} else {
+			model.addAttribute("productCategory", new ProductCategoryDTO());
 		}
 		model.addAttribute("productCategoryList", productCateogryRepository.findAll());
+		model.addAttribute("productAttributeList", productAttributeRepository.findAll());
 		return "edit-product-category";
 	}
 
@@ -75,6 +80,40 @@ public class ProductController {
 			ProductCategory ppc = productCateogryRepository.findOne(productCategoryDTO.getParentProductCategoryId());
 			if (ppc != null) {
 				pc.setParentProductCategory(ppc);
+			}
+			
+		}
+		if(productCategoryDTO.getProductAttributeIds()!=null && productCategoryDTO.getProductAttributeIds().size() >0){
+			Iterator<ProductCategoryToProductAttributeRel> it =pc.getProductCategoryToProductAttributeRel().iterator();
+			//removing elements
+			while(it.hasNext()){
+				boolean isPresent = false;
+				for(Integer paId:productCategoryDTO.getProductAttributeIds()) {
+					if(it.next().getProductAttribute().getId().equals(paId)){
+						isPresent = true;
+						break;
+					}
+				}
+				if(!isPresent){
+					it.remove();
+				}
+			}
+			for(Integer paId:productCategoryDTO.getProductAttributeIds()){
+				ProductAttribute pa = productAttributeRepository.findOne(paId);
+
+				boolean add = true;
+				for(ProductCategoryToProductAttributeRel pcToPARel :pc.getProductCategoryToProductAttributeRel()){
+					if(pcToPARel.getProductAttribute().getId().equals(paId)){
+						add = false;
+					}
+				}
+				if(add){
+					ProductCategoryToProductAttributeRel pcToPARel = new ProductCategoryToProductAttributeRel();
+					pcToPARel.setProductAttribute(pa);
+					pcToPARel.setProductCategory(pc);
+					pc.getProductCategoryToProductAttributeRel().add(pcToPARel);
+				}
+				
 			}
 		}
 		productCateogryRepository.save(pc);
