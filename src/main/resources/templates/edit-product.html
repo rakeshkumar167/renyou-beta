@@ -59,11 +59,11 @@
 			  <div class="form-group row">
 			    <label for="description" class="col-sm-2 col-form-label">Attributes</label>
 			    <div class="col-sm-10">
-			    	<div th:each="attribute : ${product.productCategory.productToProductAttributeRel}">
+			    	<div th:each="rel : ${product?.category?.productCategoryToProductAttributeRel}" th:if="${product?.category !=null}">
 			    	<div class="form-group row">
-			    		<label class="col-sm-2 col-form-label" th:value="${attribute}"></label>
+			    		<label class="col-sm-2 col-form-label" th:text="${rel.productAttribute.name}"></label>
 			    		<div class="col-sm-10">
-			    		<input type="text" class="form-control" name="attributes" th:value="${attribute?.value}"></input>
+			    		<input type="text" class="form-control" name="attributes" ></input>
 			    		</div>
 			    	</div>
 			    	</div>

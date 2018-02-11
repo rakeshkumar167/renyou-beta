@@ -5,12 +5,14 @@ import java.util.List;
 
 import com.renyou.db.Image;
 import com.renyou.db.Product;
+import com.renyou.db.ProductCategory;
 
 public class ProductDTO {
 	private Integer id;
     private String name;
     private String description;
 	private Integer productCategoryId;
+	private ProductCategory category;
 	private Integer brandId;
 	private List<String> images = new ArrayList<String>();
 	
@@ -23,6 +25,7 @@ public class ProductDTO {
 		this.name = product.getName();
 		this.description = product.getDescription();
 		this.productCategoryId = product.getCategory()!=null?product.getCategory().getId():null;
+		this.category = product.getCategory();
 		this.brandId = product.getBrand()!=null?product.getBrand().getId():null;
 		for(Image img:product.getImages()){
 			this.images.add(img.getPath());
@@ -73,6 +76,14 @@ public class ProductDTO {
 
 	public void setImages(List<String> images) {
 		this.images = images;
+	}
+
+	public ProductCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ProductCategory category) {
+		this.category = category;
 	}
 
 }
