@@ -13,7 +13,9 @@
         <!-- and is therefore entirely optional, as this markup fragment will be included -->
         <!-- from "fragments/header.html" at runtime.                                     -->
         <!-- ============================================================================ -->
-        <h1>Products List</h1>
+        <h1>Product Category List</h1>
+        <span class="alert alert-success" th:text="${message}" th:if="${message != null}"></span>
+        
 		<div>
 			<a href="/editProductCategory" class="btn btn-success btn-sm float-right">Add New</a>
 			<br/>

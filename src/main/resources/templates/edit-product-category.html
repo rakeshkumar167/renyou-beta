@@ -47,7 +47,7 @@
 			    		<option th:each="pa : ${productAttributeList}" 
 			    			th:value="${pa.id}" 
 			    			th:text="${pa.name}"
-			    			th:selected="${not #lists.isEmpty(productAttributeIds) and #lists.contains(productAttributeIds, pa.id)}"></option>
+			    			th:selected="${not #lists.isEmpty(productCategory.productAttributeIds) and #lists.contains(productCategory.productAttributeIds, pa.id)}"></option>
 			    	</select>
 			    </div>
 			  </div>

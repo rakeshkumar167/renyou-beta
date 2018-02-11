@@ -1,7 +1,6 @@
 package com.renyou;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,52 +76,52 @@ public class ProductController {
 		ProductCategory pc = new ProductCategory(productCategoryDTO);
 		if (productCategoryDTO.getParentProductCategoryId() != null
 				&& productCategoryDTO.getParentProductCategoryId() > 0) {
-			ProductCategory ppc = productCateogryRepository.findOne(productCategoryDTO.getParentProductCategoryId());
+			ProductCategory ppc = productCateogryRepository
+					.findOne(productCategoryDTO.getParentProductCategoryId());
 			if (ppc != null) {
 				pc.setParentProductCategory(ppc);
 			}
-			
 		}
-		if(productCategoryDTO.getProductAttributeIds()!=null && productCategoryDTO.getProductAttributeIds().size() >0){
-			Iterator<ProductCategoryToProductAttributeRel> it =pc.getProductCategoryToProductAttributeRel().iterator();
-			//removing elements
-			while(it.hasNext()){
+		if (productCategoryDTO.getProductAttributeIds() != null
+				&& productCategoryDTO.getProductAttributeIds().size() > 0) {
+			Iterator<ProductCategoryToProductAttributeRel> it =
+					pc.getProductCategoryToProductAttributeRel().iterator();
+			// removing elements
+			while (it.hasNext()) {
 				boolean isPresent = false;
-				for(Integer paId:productCategoryDTO.getProductAttributeIds()) {
-					if(it.next().getProductAttribute().getId().equals(paId)){
+				for (Integer paId : productCategoryDTO.getProductAttributeIds()) {
+					if (it.next().getProductAttribute().getId().equals(paId)) {
 						isPresent = true;
 						break;
 					}
 				}
-				if(!isPresent){
+				if (!isPresent) {
 					it.remove();
 				}
 			}
-			for(Integer paId:productCategoryDTO.getProductAttributeIds()){
+			for (Integer paId : productCategoryDTO.getProductAttributeIds()) {
 				ProductAttribute pa = productAttributeRepository.findOne(paId);
-
 				boolean add = true;
-				for(ProductCategoryToProductAttributeRel pcToPARel :pc.getProductCategoryToProductAttributeRel()){
-					if(pcToPARel.getProductAttribute().getId().equals(paId)){
+				for (ProductCategoryToProductAttributeRel pcToPARel :
+					pc.getProductCategoryToProductAttributeRel()) {
+					if (pcToPARel.getProductAttribute().getId().equals(paId)) {
 						add = false;
 					}
 				}
-				if(add){
+				if (add) {
 					ProductCategoryToProductAttributeRel pcToPARel = new ProductCategoryToProductAttributeRel();
 					pcToPARel.setProductAttribute(pa);
 					pcToPARel.setProductCategory(pc);
 					pc.getProductCategoryToProductAttributeRel().add(pcToPARel);
 				}
-				
+
 			}
 		}
 		productCateogryRepository.save(pc);
-		model.addAttribute("productCategory", new ProductCategoryDTO(pc.getId(), pc.getName(), pc.getDescription(),
-				pc.getParentProductCategory() != null ? pc.getParentProductCategory().getId() : null));
-		model.addAttribute("productCategoryList", productCateogryRepository.findAll());
-		model.addAttribute("message", "ProductCateogry " + pc.getName() + " saved successfully");
+		model.addAttribute("productCategories", productCateogryRepository.findAll());
+		model.addAttribute("message", pc.getName()+" saved successfully.");
 
-		return "edit-product-category";
+		return "list-product-category";
 	}
 	
 	@RequestMapping("/listProducts")

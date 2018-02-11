@@ -14,15 +14,14 @@ public class ProductCategoryToProductAttributeRel implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
     
-    @Id
     @ManyToOne
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
     
-    @Id
     @ManyToOne
     @JoinColumn(name = "product_attribute_id")
     private ProductAttribute productAttribute;

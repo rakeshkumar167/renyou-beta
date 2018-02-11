@@ -37,7 +37,7 @@ public class ProductCategory {
     @OneToMany(mappedBy="parentProductCategory")
     private List<ProductCategory> subCategories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, orphanRemoval=true)
     private Set<ProductCategoryToProductAttributeRel> productCategoryToProductAttributeRel = new HashSet<ProductCategoryToProductAttributeRel>();
     
     public ProductCategory() {

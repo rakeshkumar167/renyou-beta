@@ -12,7 +12,6 @@ import com.renyou.db.ProductCategoryRepository;
 import com.renyou.db.ProductRepository;
 import com.renyou.db.ProjectRepository;
 import com.renyou.db.SpaceRepository;
-import com.renyou.dto.TestDTO;
 
 @Controller
 public class MainController {
@@ -51,12 +50,5 @@ public class MainController {
 	public String test(Model model) {
 		return "test";
 	}
-	
-	@RequestMapping(value = "/test", method = RequestMethod.POST)
-	public String test2(TestDTO dto, Model model) {
-		System.out.println("##### "+dto.getData());
-		return "test";
-	}
-
 
 }

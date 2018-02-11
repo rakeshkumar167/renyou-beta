@@ -59,7 +59,7 @@
 			  <div class="form-group row">
 			    <label for="description" class="col-sm-2 col-form-label">Attributes</label>
 			    <div class="col-sm-10">
-			    	<div th:each="attribute : ${product.productToProductAttributeRel}">
+			    	<div th:each="attribute : ${product.productCategory.productToProductAttributeRel}">
 			    	<div class="form-group row">
 			    		<label class="col-sm-2 col-form-label" th:value="${attribute}"></label>
 			    		<div class="col-sm-10">
