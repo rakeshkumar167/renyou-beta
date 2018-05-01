@@ -15,7 +15,9 @@ import com.renyou.db.DesignerRepository;
 import com.renyou.db.Image;
 import com.renyou.db.Project;
 import com.renyou.db.ProjectRepository;
+import com.renyou.db.SpaceRepository;
 import com.renyou.dto.ProjectDTO;
+import com.renyou.dto.ProjectSpaceDTO;
 import com.renyou.storage.StorageService;
 
 @Controller
@@ -27,6 +29,8 @@ public class ProjectController {
 	@Autowired
 	private DesignerRepository designerRepository;
 	
+	@Autowired
+	private SpaceRepository spaceRepository;
 	
 	@Autowired
 	private StorageService storageService;
@@ -77,6 +81,22 @@ public class ProjectController {
     	}
 		
         return "edit-project";
+    }
+    
+    @RequestMapping("/addProjectSpace")
+    public String addProjectSpace(@RequestParam(value = "project_id", required = true) Integer productId,
+    		@RequestParam(value = "project_space_id", required = false) Integer id,
+    		Model model) {
+    	if (productId != null) {
+    		Project project = projectRepository.findOne(productId);
+
+    		model.addAttribute("project", new ProjectDTO(project));
+    		model.addAttribute("projectSpace", new ProjectSpaceDTO());
+
+    	}
+    	model.addAttribute("spaceList", spaceRepository.findAll());
+		
+        return "edit-project-space";
     }
 
 }

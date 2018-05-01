@@ -1,0 +1,74 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+...
+</head>
+<body>
+    <div th:replace="fragments/header :: header">
+      ...
+    </div>
+    <div class="container">
+      <div layout:fragment="content">
+
+        <h1>Add/Update a Project-Space</h1>
+        <h2 th:text="${project.name}"></h2>
+        	<span class="alert alert-success" th:text="${message}" th:if="${message != null}"></span>
+        	<div class="img-block" th:if="${projectSpace?.id != null}">
+				<div class="row img-row" th:if="${projectSpace?.images !=null}">
+					<div th:each="img,iterStat : ${projectSpace.images}" style="margin:5px;">
+					Image <span th:text="${iterStat.count}"></span><br/>
+					<img th:src="@{${img}}"  width="100px" height="100px"/>
+					</div>
+				</div>
+				<span class="alert alert-success" th:text="${messageImgUpload}" th:if="${messageImgUpload != null}"></span>
+				<form action="/addProjectSpaceImage" method="POST" enctype="multipart/form-data" th:if="${projectSpace?.id != null}">
+				<input type="hidden" class="form-control" name="id" th:value="${projectSpace?.id}"></input>
+				<div class="form-group row">
+				    <label for="description" class="col-sm-2 col-form-label">Add Image</label>
+				    <div class="col-sm-10">
+				    	<input type="file" name="file" /><button type="submit" class="btn btn-success">Upload</button>
+				    </div>
+				  </div>			
+				</form>
+			</div>
+			<form action="/saveProjectSpace" method="post">
+			  <div class="form-group row">
+			    <label for="name" class="col-sm-2 col-form-label">Name</label>
+			    <div class="col-sm-10">
+			      <input type="hidden" class="form-control" name="id" th:value="${projectSpace?.id}"></input>
+			    
+			      <input type="text" class="form-control" id="name" placeholder="Name" name="name" th:value="${projectSpace?.name}"></input>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="description" class="col-sm-2 col-form-label">Space</label>
+			    <div class="col-sm-10">
+			    	<select id="spaceId" name="spaceId">
+			    		<option value="-1">Select</option>
+			    		<option th:each="space : ${spaceList}" 
+			    			th:value="${space.id}" 
+			    			th:text="${space.name}"
+			    			th:selected="${space.id == productSpace?.spaceId}"></option>
+			    	</select>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="name" class="col-sm-2 col-form-label">Description</label>
+			    <div class="col-sm-10">
+			    	<textarea name="description" th:text="${projectSpace?.description}" rows="7" cols="100"></textarea>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <div class="col-sm-10">
+			      <button type="submit" class="btn btn-primary">Save</button>
+			    </div>
+			  </div>
+			</form>
+			
+      </div>
+      <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
+    </div>
+	<!-- /.container -->
+
+
+</body>
+</html>

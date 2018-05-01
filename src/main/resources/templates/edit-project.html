@@ -11,7 +11,7 @@
 
         <h1>Add/Update a Project</h1>
         	<span class="alert alert-success" th:text="${message}" th:if="${message != null}"></span>
-        	<div class="img-block">
+        	<div class="img-block" th:if="${project?.id != null}">
 				<div class="row img-row" th:if="${project?.images !=null}">
 					<div th:each="img,iterStat : ${project.images}" style="margin:5px;">
 					Image <span th:text="${iterStat.count}"></span><br/>
@@ -93,6 +93,9 @@
 			    </div>
 			  </div>
 			</form>
+			<div class="img-block" th:if="${project?.id != null}">
+				<a th:href="@{'/addProjectSpace?project_id=' + ${project.id}}">Add Project Space</a>
+			</div>
 			
       </div>
       <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
