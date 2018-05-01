@@ -1,11 +1,21 @@
 package com.renyou.db;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+
+import com.renyou.dto.ProjectDTO;
 
 @Entity
 public class Project {
@@ -18,6 +28,7 @@ public class Project {
 	@Column(unique = true)
 	private String name;
 
+	@Column(length = 5000)
 	private String description;
 
 	private String status;
@@ -27,6 +38,29 @@ public class Project {
 	private String location;
 
 	private String style;
+	
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="designer_id")
+    private Designer designer;
+    
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "project")
+    private Set<Image> images = new HashSet<>();
+    
+    public Project(){
+    	
+    }
+    
+    public Project(ProjectDTO p){
+    	this.id = p.getId();
+		this.name = p.getName();
+		this.location = p.getLocation();
+		this.status = p.getStatus();
+		this.style = p.getStyle();
+		this.type = p.getType();
+		this.description = p.getDescription();
+    }
 
 	public Integer getId() {
 		return id;
@@ -82,6 +116,22 @@ public class Project {
 
 	public void setStyle(String style) {
 		this.style = style;
+	}
+
+	public Designer getDesigner() {
+		return designer;
+	}
+
+	public void setDesigner(Designer designer) {
+		this.designer = designer;
+	}
+
+	public Set<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<Image> images) {
+		this.images = images;
 	}
 	
 }

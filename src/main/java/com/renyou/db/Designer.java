@@ -18,8 +18,10 @@ public class Designer {
 	@Column(unique = true)
 	private String name;
 
+	@Column(length = 5000)
 	private String description;
 
+	@Column(length = 500)
 	private String address;
 
 	private String city;

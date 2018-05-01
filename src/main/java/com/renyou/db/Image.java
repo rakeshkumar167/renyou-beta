@@ -21,6 +21,10 @@ public class Image {
     @JoinColumn(name = "product_id")
     private Product product;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    
     @NotNull
     private String path;
     
@@ -31,6 +35,11 @@ public class Image {
     public Image(String path, Product product) {
     	this.path = path;
     	this.product = product;
+    }
+    
+    public Image(String path, Project project) {
+    	this.path = path;
+    	this.project = project;
     }
 
 	public Integer getId() {
@@ -63,5 +72,13 @@ public class Image {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
 	}
 }
