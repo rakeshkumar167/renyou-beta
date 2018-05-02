@@ -46,7 +46,27 @@
 			      <button type="submit" class="btn btn-primary">Save</button>
 			    </div>
 			  </div>
+			  
 			</form>
+			<div th:if="${designer?.projects !=null}">
+				<h2>Projects</h2>
+					<div th:each="project,iterStat : ${designer?.projects}" class="row">
+						<div class="col-sm-10">
+							<table class="table table-sm">
+								<tr><td><b>Name</b></td><td th:text="${project.name}"></td></tr>
+								<tr><td><b>Description</b></td><td th:text="${project.description}"></td></tr>
+								<tr><td><b>Status</b></td><td th:text="${project.status}"></td></tr>
+								<tr><td><b>Type</b></td><td th:text="${project.type}"></td></tr>
+								<tr><td><b>Location</b></td><td th:text="${project.location}"></td></tr>
+								<tr><td><b>Style</b></td><td th:text="${project.style}"></td></tr>
+							</table>
+						</div>
+						<div>
+							<a th:href="@{'/addProject?id=' + ${project.id}}" class="btn btn-warning">Edit</a>
+						
+						</div>
+					</div>
+			</div>
       </div>
       <div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
     </div>

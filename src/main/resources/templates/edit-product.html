@@ -16,7 +16,7 @@
         <h1>Add/Update a Product</h1>
         	<span class="alert alert-success" th:text="${message}" th:if="${message != null}"></span>
 
-        	<div class="img-block">
+        	<div class="img-block" th:if="${product?.images !=null}">
 				<div class="row img-row" th:if="${product?.images !=null}">
 					<div th:each="img,iterStat : ${product.images}" style="margin:5px;">Image <span th:text="${iterStat.count}"></span><br/><img th:src="@{${img}}"  width="100px" height="100px"/></div>
 				</div>

@@ -94,7 +94,24 @@
 			  </div>
 			</form>
 			<div class="img-block" th:if="${project?.id != null}">
-				<a th:href="@{'/addProjectSpace?project_id=' + ${project.id}}">Add Project Space</a>
+				
+				<a th:href="@{'/addProjectSpace?project_id=' + ${project.id}}" class="btn btn-success">Add Project Space</a><br/><br/>
+				<div th:if="${project?.projectSpaces !=null}">
+					<div th:each="projectSpace,iterStat : ${project.projectSpaces}" class="row">
+						<div class="col-sm-10">
+							<table class="table table-sm table-dark">
+								<tr><td><b>Name</b></td><td th:text="${projectSpace.name}"></td></tr>
+								<tr><td><b>Space</b></td><td th:text="${projectSpace.spaceName}"></td></tr>
+								<tr><td><b>ShortDescription</b></td><td th:text="${projectSpace.shortDescription}"></td></tr>
+								<tr><td><b>Description</b></td><td th:text="${projectSpace.description}"></td></tr>
+							</table>
+						</div>
+						<div>
+							<a th:href="@{'/addProjectSpace?project_id=' + ${project.id} +'&amp;project_space_id='+${projectSpace.id}}" class="btn btn-warning">Edit</a>
+						
+						</div>
+					</div>
+				</div>
 			</div>
 			
       </div>

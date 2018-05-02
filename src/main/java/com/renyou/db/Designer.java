@@ -1,10 +1,15 @@
 package com.renyou.db;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -25,6 +30,10 @@ public class Designer {
 	private String address;
 
 	private String city;
+	
+	@OneToMany(fetch = FetchType.EAGER,
+            mappedBy = "designer")
+    private Set<Project> projects = new HashSet<>();
 
 	public Integer getId() {
 		return id;
@@ -64,5 +73,13 @@ public class Designer {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public Set<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
 	}
 }

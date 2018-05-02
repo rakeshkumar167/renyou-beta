@@ -45,6 +45,18 @@ public class MainController {
 
 		return "index";
 	}
+	
+	@RequestMapping("/map")
+	public String map(Model model) {
+		model.addAttribute("brands", brandRepository.findAll());
+		model.addAttribute("productCategories", productCateogryRepository.findAll());
+		model.addAttribute("spaces", spaceRepository.findAll());
+		model.addAttribute("products", productRepository.findAll());
+		model.addAttribute("designers", designerRepository.findAll());
+		model.addAttribute("projects", projectRepository.findAll());
+
+		return "map";
+	}
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(Model model) {

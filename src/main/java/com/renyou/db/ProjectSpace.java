@@ -1,15 +1,21 @@
 package com.renyou.db;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.renyou.dto.ProjectSpaceDTO;
 
 @Entity
 public class ProjectSpace  implements Serializable{
@@ -28,13 +34,29 @@ public class ProjectSpace  implements Serializable{
 	@Column(length = 5000)
 	private String description;
 	
-    @ManyToOne(cascade={CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name="project_id")
     private Project project;
     
-    @ManyToOne(cascade={CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name="space_id")
     private Space space;
+    
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "projectSpace")
+    private Set<Image> images = new HashSet<>();
+    
+    public ProjectSpace() {
+    	
+    }
+
+	public ProjectSpace(ProjectSpaceDTO projectSpace) {
+		this.id = projectSpace.getId();
+		this.name = projectSpace.getName();
+		this.description = projectSpace.getDescription();
+		this.shortDescription = projectSpace.getShortDescription();
+	}
 
 	public Integer getId() {
 		return id;
@@ -82,6 +104,14 @@ public class ProjectSpace  implements Serializable{
 
 	public void setSpace(Space space) {
 		this.space = space;
+	}
+
+	public Set<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<Image> images) {
+		this.images = images;
 	}
     
     

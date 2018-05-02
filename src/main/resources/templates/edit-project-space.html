@@ -10,7 +10,7 @@
       <div layout:fragment="content">
 
         <h1>Add/Update a Project-Space</h1>
-        <h2 th:text="${project.name}"></h2>
+        <a th:href="@{'/addProject?id=' + ${projectSpace?.projectId}}"><h2 th:text="${project.name}"></h2></a>
         	<span class="alert alert-success" th:text="${message}" th:if="${message != null}"></span>
         	<div class="img-block" th:if="${projectSpace?.id != null}">
 				<div class="row img-row" th:if="${projectSpace?.images !=null}">
@@ -35,6 +35,7 @@
 			    <label for="name" class="col-sm-2 col-form-label">Name</label>
 			    <div class="col-sm-10">
 			      <input type="hidden" class="form-control" name="id" th:value="${projectSpace?.id}"></input>
+			      <input type="hidden" class="form-control" name="projectId" th:value="${projectSpace?.projectId}"></input>
 			    
 			      <input type="text" class="form-control" id="name" placeholder="Name" name="name" th:value="${projectSpace?.name}"></input>
 			    </div>
@@ -47,8 +48,14 @@
 			    		<option th:each="space : ${spaceList}" 
 			    			th:value="${space.id}" 
 			    			th:text="${space.name}"
-			    			th:selected="${space.id == productSpace?.spaceId}"></option>
+			    			th:selected="${space.id == projectSpace?.spaceId}"></option>
 			    	</select>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <label for="name" class="col-sm-2 col-form-label">Small Description</label>
+			    <div class="col-sm-10">
+			    	<textarea name="shortDescription" th:text="${projectSpace?.shortDescription}" rows="3" cols="100"></textarea>
 			    </div>
 			  </div>
 			  <div class="form-group row">
@@ -58,8 +65,19 @@
 			    </div>
 			  </div>
 			  <div class="form-group row">
+			    <label for="description" class="col-sm-2 col-form-label">Products Used</label>
 			    <div class="col-sm-10">
-			      <button type="submit" class="btn btn-primary">Save</button>
+			    	<select id="products" name="products" multiple="multiple" size="10">
+			    		<option th:each="product : ${productList}" 
+			    			th:value="${product.id}" 
+			    			th:text="${product.name}"></option>
+			    	</select>
+			    </div>
+			  </div>
+			  <div class="form-group row">
+			    <div class="col-sm-10">
+			      <button type="submit" class="btn btn-primary">Save</button>&nbsp;
+			      <a th:href="@{'/addProject?id=' + ${projectSpace?.projectId}}" class="btn btn-info">Back To Project</a>
 			    </div>
 			  </div>
 			</form>

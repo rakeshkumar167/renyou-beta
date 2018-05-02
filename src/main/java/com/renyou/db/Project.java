@@ -48,6 +48,11 @@ public class Project {
             mappedBy = "project")
     private Set<Image> images = new HashSet<>();
     
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "project")
+    private Set<ProjectSpace> projectSpaces = new HashSet<>();
+    
     public Project(){
     	
     }
@@ -132,6 +137,14 @@ public class Project {
 
 	public void setImages(Set<Image> images) {
 		this.images = images;
+	}
+
+	public Set<ProjectSpace> getProjectSpaces() {
+		return projectSpaces;
+	}
+
+	public void setProjectSpaces(Set<ProjectSpace> projectSpaces) {
+		this.projectSpaces = projectSpaces;
 	}
 	
 }

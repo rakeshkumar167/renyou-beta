@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.renyou.db.Image;
 import com.renyou.db.Project;
+import com.renyou.db.ProjectSpace;
 
 public class ProjectDTO {
 	
@@ -25,6 +26,8 @@ public class ProjectDTO {
 	private Integer designerId;
 	
 	private List<String> images = new ArrayList<String>();
+	
+	private List<ProjectSpaceDTO> projectSpaces = new ArrayList<>();
 
 	
 	public ProjectDTO(){
@@ -44,6 +47,11 @@ public class ProjectDTO {
 		}
 		for(Image img:p.getImages()){
 			this.images.add(img.getPath());
+		}
+		if(p.getProjectSpaces()!=null){
+			for(ProjectSpace ps:p.getProjectSpaces()){
+				projectSpaces.add(new ProjectSpaceDTO(ps));
+			}
 		}
 	}
 
@@ -117,5 +125,13 @@ public class ProjectDTO {
 
 	public void setImages(List<String> images) {
 		this.images = images;
+	}
+
+	public List<ProjectSpaceDTO> getProjectSpaces() {
+		return projectSpaces;
+	}
+
+	public void setProjectSpaces(List<ProjectSpaceDTO> projectSpaces) {
+		this.projectSpaces = projectSpaces;
 	}
 }
