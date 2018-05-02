@@ -33,9 +33,18 @@ public class MainController {
 
 	@Autowired
 	private ProjectRepository projectRepository;
-
+	
 	@RequestMapping("/")
 	public String welcome(Model model) {
+		model.addAttribute("spaces", spaceRepository.findAll());
+		model.addAttribute("designers", designerRepository.findAll());
+		model.addAttribute("projects", projectRepository.findAll());
+
+		return "index";
+	}
+
+	@RequestMapping("/admin")
+	public String admin(Model model) {
 		model.addAttribute("brands", brandRepository.count());
 		model.addAttribute("productCategories", productCateogryRepository.count());
 		model.addAttribute("spaces", spaceRepository.count());
@@ -43,7 +52,7 @@ public class MainController {
 		model.addAttribute("designers", designerRepository.count());
 		model.addAttribute("projects", projectRepository.count());
 
-		return "index";
+		return "admin";
 	}
 	
 	@RequestMapping("/map")
