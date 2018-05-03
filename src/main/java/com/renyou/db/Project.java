@@ -39,6 +39,8 @@ public class Project {
 
 	private String style;
 	
+	private Boolean promoted;
+	
     @ManyToOne(cascade={CascadeType.ALL})
     @JoinColumn(name="designer_id")
     private Designer designer;
@@ -145,6 +147,14 @@ public class Project {
 
 	public void setProjectSpaces(Set<ProjectSpace> projectSpaces) {
 		this.projectSpaces = projectSpaces;
+	}
+
+	public Boolean getPromoted() {
+		return promoted;
+	}
+
+	public void setPromoted(Boolean promoted) {
+		this.promoted = promoted;
 	}
 	
 }

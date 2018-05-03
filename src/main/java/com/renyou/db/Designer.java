@@ -31,6 +31,8 @@ public class Designer {
 
 	private String city;
 	
+	private Boolean promoted;
+	
 	@OneToMany(fetch = FetchType.EAGER,
             mappedBy = "designer")
     private Set<Project> projects = new HashSet<>();
@@ -81,5 +83,13 @@ public class Designer {
 
 	public void setProjects(Set<Project> projects) {
 		this.projects = projects;
+	}
+
+	public Boolean getPromoted() {
+		return promoted;
+	}
+
+	public void setPromoted(Boolean promoted) {
+		this.promoted = promoted;
 	}
 }
