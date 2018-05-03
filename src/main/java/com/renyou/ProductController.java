@@ -2,6 +2,7 @@ package com.renyou;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.renyou.db.Brand;
 import com.renyou.db.BrandRepository;
@@ -24,6 +26,7 @@ import com.renyou.db.ProductCategory;
 import com.renyou.db.ProductCategoryRepository;
 import com.renyou.db.ProductCategoryToProductAttributeRel;
 import com.renyou.db.ProductRepository;
+import com.renyou.db.ProductToProductAttributeRel;
 import com.renyou.dto.ProductAttributeDTO;
 import com.renyou.dto.ProductCategoryDTO;
 import com.renyou.dto.ProductDTO;
@@ -36,21 +39,21 @@ public class ProductController {
 
 	@Autowired
 	private ProductCategoryRepository productCateogryRepository;
-	
+
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@Autowired
 	private ProductAttributeTypeRepository productAttributeTypeRepository;
-	
+
 	@Autowired
 	private ProductAttributeRepository productAttributeRepository;
-	
+
 	@Autowired
 	private StorageService storageService;
-	
-	private static final String IMG_FOLDER="product";
-	
+
+	private static final String IMG_FOLDER = "product";
+
 	@RequestMapping("/listProductCategory")
 	public String productCategoryList(Model model) {
 		model.addAttribute("productCategories", productCateogryRepository.findAll());
@@ -76,16 +79,14 @@ public class ProductController {
 		ProductCategory pc = new ProductCategory(productCategoryDTO);
 		if (productCategoryDTO.getParentProductCategoryId() != null
 				&& productCategoryDTO.getParentProductCategoryId() > 0) {
-			ProductCategory ppc = productCateogryRepository
-					.findOne(productCategoryDTO.getParentProductCategoryId());
+			ProductCategory ppc = productCateogryRepository.findOne(productCategoryDTO.getParentProductCategoryId());
 			if (ppc != null) {
 				pc.setParentProductCategory(ppc);
 			}
 		}
 		if (productCategoryDTO.getProductAttributeIds() != null
 				&& productCategoryDTO.getProductAttributeIds().size() > 0) {
-			Iterator<ProductCategoryToProductAttributeRel> it =
-					pc.getProductCategoryToProductAttributeRel().iterator();
+			Iterator<ProductCategoryToProductAttributeRel> it = pc.getProductCategoryToProductAttributeRel().iterator();
 			// removing elements
 			while (it.hasNext()) {
 				boolean isPresent = false;
@@ -102,8 +103,7 @@ public class ProductController {
 			for (Integer paId : productCategoryDTO.getProductAttributeIds()) {
 				ProductAttribute pa = productAttributeRepository.findOne(paId);
 				boolean add = true;
-				for (ProductCategoryToProductAttributeRel pcToPARel :
-					pc.getProductCategoryToProductAttributeRel()) {
+				for (ProductCategoryToProductAttributeRel pcToPARel : pc.getProductCategoryToProductAttributeRel()) {
 					if (pcToPARel.getProductAttribute().getId().equals(paId)) {
 						add = false;
 					}
@@ -119,17 +119,17 @@ public class ProductController {
 		}
 		productCateogryRepository.save(pc);
 		model.addAttribute("productCategories", productCateogryRepository.findAll());
-		model.addAttribute("message", pc.getName()+" saved successfully.");
+		model.addAttribute("message", pc.getName() + " saved successfully.");
 
 		return "list-product-category";
 	}
-	
+
 	@RequestMapping("/listProducts")
 	public String productsList(Model model) {
 		model.addAttribute("products", productRepository.findAll());
 		return "list-products";
 	}
-	
+
 	@RequestMapping(value = "/editProduct", method = RequestMethod.GET)
 	public String editProduct(@RequestParam(value = "id", required = false) Integer id, Model model) {
 		productPageSetup(model, id);
@@ -138,17 +138,15 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/saveProduct", method = RequestMethod.POST)
-	public String ProductSave(ProductDTO productDTO, Model model) {
+	public ModelAndView ProductSave(ProductDTO productDTO, Model model) {
 		Product product = new Product(productDTO);
-		if (productDTO.getProductCategoryId() != null
-				&& productDTO.getProductCategoryId() > 0) {
+		if (productDTO.getProductCategoryId() != null && productDTO.getProductCategoryId() > 0) {
 			ProductCategory ppc = productCateogryRepository.findOne(productDTO.getProductCategoryId());
 			if (ppc != null) {
 				product.setCategory(ppc);
 			}
 		}
-		if (productDTO.getBrandId() != null
-				&& productDTO.getBrandId() > 0) {
+		if (productDTO.getBrandId() != null && productDTO.getBrandId() > 0) {
 			Brand brand = brandRepository.findOne(productDTO.getBrandId());
 			if (brand != null) {
 				product.setBrand(brand);
@@ -158,37 +156,67 @@ public class ProductController {
 		productPageSetup(model, product.getId());
 
 		model.addAttribute("message", "Product " + product.getName() + " saved successfully");
+		return new ModelAndView("redirect:/editProduct?id=" + product.getId());
+	}
 
+	@PostMapping("/saveProductAttributeValue")
+	public ModelAndView productAttributeSave(@RequestParam Map<String, String> allRequestParams, Model model) {
+		Integer productId = Integer.parseInt(allRequestParams.get("id"));
+		Product product = productRepository.findOne(productId);
+		for (String modelKey : allRequestParams.keySet()) {
+			if (modelKey.startsWith("paId_")) {
+				String[] idSplit = modelKey.split("_");
+				ProductToProductAttributeRel rel = new ProductToProductAttributeRel();
+				if (!idSplit[1].equals("null")) {
+					Integer relId = Integer.parseInt(idSplit[1]);
+					for (ProductToProductAttributeRel savedRel : product.getProductToProductAttributeRel()) {
+						if (savedRel.getId().equals(relId)) {
+							rel = savedRel;
+							break;
+						}
+					}
+					rel.setValue(allRequestParams.get(modelKey));
+				} else {
+					rel.setProduct(product);
+					Integer productAttributeId = Integer.parseInt(modelKey.split("_")[2]);
+					rel.setProductAttribute(productAttributeRepository.findOne(productAttributeId));
+					rel.setValue(allRequestParams.get(modelKey));
+					product.getProductToProductAttributeRel().add(rel);
+				}
+			}
+			
+		}
+		productRepository.save(product);
+		return new ModelAndView("redirect:/editProduct?id=" + 1);
+	}
+
+	@PostMapping("/addProductImage")
+	public String handleProductFileUpload(@RequestParam("file") MultipartFile file,
+			@RequestParam(value = "id", required = false) Integer id, Model model) {
+		if (id != null) {
+			storageService.store(IMG_FOLDER, file, id + "_" + file.getOriginalFilename());
+			Product product = productRepository.findOne(id);
+			product.getImages()
+					.add(new Image(IMG_FOLDER + File.separator + id + "_" + file.getOriginalFilename(), product));
+			productRepository.save(product);
+
+			model.addAttribute("messageImgUpload",
+					"You successfully uploaded " + file.getOriginalFilename() + "! for product:" + id);
+		}
+		productPageSetup(model, id);
 		return "edit-product";
 	}
-	
-    @PostMapping("/addProductImage")
-    public String handleProductFileUpload(@RequestParam("file") MultipartFile file, 
-    		@RequestParam(value = "id", required = false) Integer id,
-    		Model model) {
-    	if (id != null) {
-	        storageService.store(IMG_FOLDER, file, id+"_"+file.getOriginalFilename());
-    		Product product = productRepository.findOne(id);
-    		product.getImages().add(new Image(IMG_FOLDER+File.separator+id+"_"+file.getOriginalFilename(), product));
-    		productRepository.save(product);
-    		
-    		model.addAttribute("messageImgUpload",
-	                "You successfully uploaded " + file.getOriginalFilename() + "! for product:"+id);
-    	}
-    	productPageSetup(model, id);
-        return "edit-product";
-    }
-    
-    private void productPageSetup(Model model, Integer productId){
-    	if (productId != null) {
+
+	private void productPageSetup(Model model, Integer productId) {
+		if (productId != null) {
 			Product p = productRepository.findOne(productId);
 			ProductDTO dto = new ProductDTO(p);
 			model.addAttribute("product", dto);
 		}
 		model.addAttribute("productCategoryList", productCateogryRepository.findAll());
 		model.addAttribute("brandList", brandRepository.findAll());
-    }
-    
+	}
+
 	@RequestMapping("/listProductAttributeTypes")
 	public String productAttributeTypesList(Model model) {
 		model.addAttribute("productAttributeTypes", productAttributeTypeRepository.findAll());
@@ -211,8 +239,7 @@ public class ProductController {
 		model.addAttribute("message", "productAttributeType " + productAttributeType.getName() + " saved successfully");
 		return "edit-product-attribute-type";
 	}
-	
-	
+
 	@RequestMapping("/listProductAttributes")
 	public String productAttributeList(Model model) {
 		model.addAttribute("productAttributes", productAttributeRepository.findAll());
@@ -232,9 +259,10 @@ public class ProductController {
 	@RequestMapping(value = "/saveProductAttribute", method = RequestMethod.POST)
 	public String productAttributeSave(ProductAttributeDTO dto, Model model) {
 		ProductAttribute productAttribute = new ProductAttribute(dto);
-		if(dto.getProductAttributeTypeId()!=null){
-			productAttribute.setProductAttributeType(productAttributeTypeRepository.findOne(dto.getProductAttributeTypeId()));
-		} 
+		if (dto.getProductAttributeTypeId() != null) {
+			productAttribute
+					.setProductAttributeType(productAttributeTypeRepository.findOne(dto.getProductAttributeTypeId()));
+		}
 		productAttributeRepository.save(productAttribute);
 		model.addAttribute("productAttribute", new ProductAttributeDTO(productAttribute));
 		model.addAttribute("message", "Product Attribute " + productAttribute.getName() + " saved successfully");

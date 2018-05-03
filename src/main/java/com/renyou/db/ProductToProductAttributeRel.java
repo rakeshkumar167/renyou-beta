@@ -1,8 +1,7 @@
 package com.renyou.db;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,25 +9,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class ProductToProductAttributeRel implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+public class ProductToProductAttributeRel {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
     
-    @Id
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
     
-    @Id
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "product_attribute_id")
     private ProductAttribute productAttribute;
     
     private String value;
+    
+    public ProductToProductAttributeRel(){
+    	
+    }
 
 	public Integer getId() {
 		return id;

@@ -43,7 +43,8 @@ public class Product {
             mappedBy = "product")
     private Set<Image> images = new HashSet<>();
     
-    @OneToMany(mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,mappedBy = "product")
     private Set<ProductToProductAttributeRel> productToProductAttributeRel = new HashSet<ProductToProductAttributeRel>();
     
     public Product(){
