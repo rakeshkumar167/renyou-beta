@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.renyou.db.Brand;
-import com.renyou.db.BrandRepository;
+import com.renyou.db.repository.BrandRepository;
 import com.renyou.dto.BrandDTO;
 
 @Controller
@@ -34,8 +34,8 @@ public class BrandController {
 
 	@RequestMapping(value = "/saveBrand", method = RequestMethod.POST)
 	public String brandsSave(BrandDTO brand, Model model) {
-		brandRepository.save(new Brand(brand));
-		model.addAttribute("brand", brand);
+		Brand b = brandRepository.save(new Brand(brand));
+		model.addAttribute("brand", new BrandDTO(b));
 		model.addAttribute("message", "Brand " + brand.getName() + " saved successfully");
 		return "edit-brand";
 	}

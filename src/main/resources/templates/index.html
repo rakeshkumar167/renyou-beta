@@ -28,7 +28,13 @@
 	    	</div>
 	    	<br/>
 	    	<h2>Top Designers</h2>
-	        
+	        <div class="slick-car-d">
+	    		<div th:each="designer : ${designers}">
+					    <span style="font-weight:bold;font-size:12px" th:text="${designer.name}"></span><br/><br/>
+					    <span th:text="${designer.description}"></span>
+					    <span th:text="${designer.city}"></span>
+	    		</div>
+	    	</div>
 	    </div>
           		
       </div>
@@ -44,7 +50,16 @@ $('.slick-car').slick({
 	autoplaySpeed: 2000,
 	dots: true,
 	infinite: true,
-	speed: 500,
+	speed: 1000,
+	cssEase: 'linear'
+	});
+	
+$('.slick-car-d').slick({
+	autoplay: true,
+	autoplaySpeed: 2000,
+	dots: true,
+	infinite: true,
+	speed: 1000,
 	cssEase: 'linear'
 	});
 </script>

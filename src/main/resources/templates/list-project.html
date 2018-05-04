@@ -42,7 +42,10 @@
 		            <td th:text="${project.location}"></td>
 		            <td th:text="${project.style}"></td>
 		            <td><a th:href="@{'/addProject?id=' + ${project.id}}">Edit</a></td>
-		            <td></td>
+		            <td>
+		            <a th:href="@{'/promoteProject?id=' + ${project.id}}" class="btn btn-sm btn-success" th:if="${project.promoted == null || project.promoted == false}">Promote</a>
+		            <a th:href="@{'/demoteProject?id=' + ${project.id}}" th:if="${project.promoted == true}" class="btn btn-sm btn-danger">Demote</a>
+		            </td>
 		        </tr>
 		        </tbody>
 		    </table>

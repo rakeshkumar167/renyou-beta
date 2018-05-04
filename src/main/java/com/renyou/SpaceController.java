@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.renyou.db.Space;
-import com.renyou.db.SpaceRepository;
 import com.renyou.db.SpaceType;
-import com.renyou.db.SpaceTypeRepository;
+import com.renyou.db.repository.SpaceRepository;
+import com.renyou.db.repository.SpaceTypeRepository;
 import com.renyou.dto.SpaceDTO;
 
 @Controller

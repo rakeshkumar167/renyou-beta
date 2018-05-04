@@ -38,7 +38,9 @@
 		            <td th:text="${designer.address}"></td>
 		            <td th:text="${designer.city}"></td>
 		            <td><a th:href="@{'/addDesigner?id=' + ${designer.id}}">Edit</a></td>
-		            <td></td>
+		            <td><a th:href="@{'/promoteDesigner?id=' + ${designer.id}}" class="btn btn-sm btn-success" th:if="${designer.promoted == null || designer.promoted == false}">Promote</a>
+		            <a th:href="@{'/demoteDesigner?id=' + ${designer.id}}" th:if="${designer.promoted == true}" class="btn btn-sm btn-danger">Demote</a>
+		            </td>
 		        </tr>
 		        </tbody>
 		    </table>

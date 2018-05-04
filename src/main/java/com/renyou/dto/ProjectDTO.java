@@ -25,6 +25,8 @@ public class ProjectDTO {
 	
 	private Integer designerId;
 	
+	private Boolean promoted;
+	
 	private List<String> images = new ArrayList<String>();
 	
 	private List<ProjectSpaceDTO> projectSpaces = new ArrayList<>();
@@ -42,6 +44,7 @@ public class ProjectDTO {
 		this.style = p.getStyle();
 		this.type = p.getType();
 		this.description = p.getDescription();
+		this.promoted = p.getPromoted();
 		if(p.getDesigner()!=null){
 			this.designerId = p.getDesigner().getId();
 		}
@@ -133,5 +136,13 @@ public class ProjectDTO {
 
 	public void setProjectSpaces(List<ProjectSpaceDTO> projectSpaces) {
 		this.projectSpaces = projectSpaces;
+	}
+
+	public Boolean getPromoted() {
+		return promoted;
+	}
+
+	public void setPromoted(Boolean promoted) {
+		this.promoted = promoted;
 	}
 }

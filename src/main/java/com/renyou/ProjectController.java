@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.renyou.db.DesignerRepository;
 import com.renyou.db.Image;
-import com.renyou.db.ProductRepository;
 import com.renyou.db.Project;
-import com.renyou.db.ProjectRepository;
 import com.renyou.db.ProjectSpace;
-import com.renyou.db.ProjectSpaceRepository;
-import com.renyou.db.SpaceRepository;
+import com.renyou.db.repository.DesignerRepository;
+import com.renyou.db.repository.ProductRepository;
+import com.renyou.db.repository.ProjectRepository;
+import com.renyou.db.repository.ProjectSpaceRepository;
+import com.renyou.db.repository.SpaceRepository;
 import com.renyou.dto.ProjectDTO;
 import com.renyou.dto.ProjectSpaceDTO;
 import com.renyou.storage.StorageService;
@@ -72,6 +72,22 @@ public class ProjectController {
 		proj.setDesigner(designerRepository.findOne(project.getDesignerId()));
 		proj = projectRepository.save(proj);
 		return new ModelAndView("redirect:/addProject?id=" + proj.getId());
+	}
+	
+	@RequestMapping(value = "/promoteProject", method = RequestMethod.GET)
+	public ModelAndView promoteProject(@RequestParam(value = "id", required = false) Integer id, Model model){
+		Project proj = projectRepository.findOne(id);
+		proj.setPromoted(true);
+		projectRepository.save(proj);
+		return new ModelAndView("redirect:/listProjects");
+	}
+	
+	@RequestMapping(value = "/demoteProject", method = RequestMethod.GET)
+	public ModelAndView demoteProject(@RequestParam(value = "id", required = false) Integer id, Model model){
+		Project proj = projectRepository.findOne(id);
+		proj.setPromoted(false);
+		projectRepository.save(proj);
+		return new ModelAndView("redirect:/listProjects");
 	}
 
 	@PostMapping("/addProjectImage")
@@ -128,11 +144,12 @@ public class ProjectController {
 	}
 	
 	@PostMapping("/addProjectSpaceImage")
-	public String handleProductSpaceFileUpload(@RequestParam("file") MultipartFile file,
+	public ModelAndView handleProductSpaceFileUpload(@RequestParam("file") MultipartFile file,
 			@RequestParam(value = "id", required = false) Integer id, Model model) {
+		ProjectSpace projectSpace = null;
 		if (id != null) {
 			storageService.store(PROJECT_SPACE_IMG_FOLDER, file, id + "_" + file.getOriginalFilename());
-			ProjectSpace projectSpace = projectSpaceRepository.findOne(id);
+			projectSpace = projectSpaceRepository.findOne(id);
 			projectSpace.getImages()
 					.add(new Image(PROJECT_SPACE_IMG_FOLDER + File.separator + id + "_" + file.getOriginalFilename(), projectSpace));
 			projectSpace = projectSpaceRepository.save(projectSpace);
@@ -142,7 +159,8 @@ public class ProjectController {
 					"You successfully uploaded " + file.getOriginalFilename() + "! for project Space:" + id);
 		}
 
-		return "edit-project";
+		return new ModelAndView(
+				"redirect:/addProjectSpace?project_id=" + projectSpace.getProject().getId() + "&project_space_id=" + id);
 	}
 
 }

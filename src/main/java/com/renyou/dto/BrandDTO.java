@@ -1,9 +1,16 @@
 package com.renyou.dto;
 
+import com.renyou.db.Brand;
+
 public class BrandDTO {
 	
 	public BrandDTO(){
 		
+	}
+	public BrandDTO(Brand b){
+		this.id = b.getId();
+		this.name = b.getName();
+		this.description = b.getDescription();
 	}
 	
 	public BrandDTO(Integer id, String name, String description){

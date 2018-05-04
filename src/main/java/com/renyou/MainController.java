@@ -4,14 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.renyou.db.BrandRepository;
-import com.renyou.db.DesignerRepository;
-import com.renyou.db.ProductCategoryRepository;
-import com.renyou.db.ProductRepository;
-import com.renyou.db.ProjectRepository;
-import com.renyou.db.SpaceRepository;
+import com.renyou.db.repository.BrandRepository;
+import com.renyou.db.repository.DesignerRepository;
+import com.renyou.db.repository.ProductCategoryRepository;
+import com.renyou.db.repository.ProductRepository;
+import com.renyou.db.repository.ProjectRepository;
+import com.renyou.db.repository.SpaceRepository;
 
 @Controller
 public class MainController {
@@ -37,8 +36,8 @@ public class MainController {
 	@RequestMapping("/")
 	public String welcome(Model model) {
 		model.addAttribute("spaces", spaceRepository.findAll());
-		model.addAttribute("designers", designerRepository.findAll());
-		model.addAttribute("projects", projectRepository.findAll());
+		model.addAttribute("designers", designerRepository.findByPromoted(true));
+		model.addAttribute("projects", projectRepository.findByPromoted(true));
 
 		return "index";
 	}
@@ -63,13 +62,7 @@ public class MainController {
 		model.addAttribute("products", productRepository.findAll());
 		model.addAttribute("designers", designerRepository.findAll());
 		model.addAttribute("projects", projectRepository.findAll());
-
 		return "map";
-	}
-
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public String test(Model model) {
-		return "test";
 	}
 
 }
