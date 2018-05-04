@@ -3,6 +3,7 @@ package com.renyou.db;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+
+import com.renyou.dto.DesignerDTO;
 
 @Entity
 public class Designer {
@@ -36,6 +39,31 @@ public class Designer {
 	@OneToMany(fetch = FetchType.EAGER,
             mappedBy = "designer")
     private Set<Project> projects = new HashSet<>();
+	
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "designer")
+    private Set<Image> images = new HashSet<>();
+    
+    public Designer() {
+    	
+    }
+    
+    public Designer(DesignerDTO dto){
+    	this.id = dto.getId();
+    	this.name = dto.getName();
+    	this.description = dto.getDescription();
+    	this.city = dto.getCity();
+    	this.address = dto.getAddress();
+    	this.promoted = dto.getPromoted();
+    }
+    
+    public void setDesignerDTO(DesignerDTO dto){
+    	this.name = dto.getName();
+    	this.description = dto.getDescription();
+    	this.city = dto.getCity();
+    	this.address = dto.getAddress();
+    }
 
 	public Integer getId() {
 		return id;
@@ -91,5 +119,13 @@ public class Designer {
 
 	public void setPromoted(Boolean promoted) {
 		this.promoted = promoted;
+	}
+
+	public Set<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<Image> images) {
+		this.images = images;
 	}
 }

@@ -1,0 +1,2 @@
+How to create a dump
+/usr/local/mysql/bin/mysqldump -u test -h localhost -p --no-create-info renyou > /Users/rakeshsinha/Workspace/dump.sql

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.renyou.db.Designer;
 import com.renyou.db.Image;
 import com.renyou.db.repository.DesignerRepository;
+import com.renyou.dto.DesignerDTO;
 import com.renyou.storage.StorageService;
 
 
@@ -39,16 +40,23 @@ public class DesignerController {
 	@RequestMapping(value = "/addDesigner", method = RequestMethod.GET)
 	public String designersAdd(@RequestParam(value = "id", required = false) Integer id, Model model) {
 		if (id != null) {
-			Designer space = designerRepository.findOne(id);
-			model.addAttribute("designer", space);
+			Designer designer = designerRepository.findOne(id);
+			model.addAttribute("designer", new DesignerDTO(designer));
 		}
 		return "edit-designer";
 	}
 
 	@RequestMapping(value = "/saveDesigner", method = RequestMethod.POST)
-	public String DesignerSave(Designer designer, Model model) {
-		designerRepository.save(designer);
-		model.addAttribute("designer", designer);
+	public String DesignerSave(DesignerDTO designer, Model model) {
+		Designer des = null;
+		if(designer.getId()!=null){
+			des = designerRepository.findOne(designer.getId());
+		}else {
+			des = new Designer();
+		}
+		des.setDesignerDTO(designer);
+		des = designerRepository.save(des);
+		model.addAttribute("designer", new DesignerDTO(des));
 		model.addAttribute("message", "Designer " + designer.getName() + " saved successfully");
 		return "edit-designer";
 	}
@@ -68,7 +76,7 @@ public class DesignerController {
 		designerRepository.save(designer);
 		return new ModelAndView("redirect:/listDesigners");
 	}
-	/*
+	
 	@PostMapping("/addDesignerImage")
 	public ModelAndView handleProductFileUpload(@RequestParam("file") MultipartFile file,
 			@RequestParam(value = "id", required = false) Integer id, Model model) {
@@ -81,5 +89,5 @@ public class DesignerController {
 		}
 		return new ModelAndView(
 				"redirect:/addDesigner?id=" + id);
-	}*/
+	}
 }

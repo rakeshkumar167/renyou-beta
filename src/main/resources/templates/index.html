@@ -30,9 +30,16 @@
 	    	<h2>Top Designers</h2>
 	        <div class="slick-car-d">
 	    		<div th:each="designer : ${designers}">
-					    <span style="font-weight:bold;font-size:12px" th:text="${designer.name}"></span><br/><br/>
-					    <span th:text="${designer.description}"></span>
-					    <span th:text="${designer.city}"></span>
+	    				<div class="row">
+		    				<div th:each="img,iterStat : ${designer.images}" class="col-sm-4">
+		    					<img th:src="@{${img}}" height="200px"/>
+		    				</div>
+		    				<div class="col-sm-8">
+						    <span style="font-weight:bold;font-size:12px" th:text="${designer.name}"></span><br/><br/>
+						    <span th:text="${designer.description}"></span>
+						    <span th:text="${designer.city}"></span>
+						    </div>
+					    </div>
 	    		</div>
 	    	</div>
 	    </div>

@@ -29,6 +29,10 @@ public class Image {
     @JoinColumn(name = "project_space_id")
     private ProjectSpace projectSpace;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "designer_id")
+    private Designer designer;
+    
     @NotNull
     private String path;
     
@@ -49,6 +53,11 @@ public class Image {
     public Image(String path, ProjectSpace projectSpace) {
     	this.path = path;
     	this.projectSpace = projectSpace;
+    }
+    
+    public Image(String path, Designer designer) {
+    	this.path = path;
+    	this.designer = designer;
     }
 
 	public Integer getId() {
@@ -97,5 +106,13 @@ public class Image {
 
 	public void setProjectSpace(ProjectSpace projectSpace) {
 		this.projectSpace = projectSpace;
+	}
+
+	public Designer getDesigner() {
+		return designer;
+	}
+
+	public void setDesigner(Designer designer) {
+		this.designer = designer;
 	}
 }
